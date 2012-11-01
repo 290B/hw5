@@ -200,17 +200,19 @@ public class TspTask implements Serializable{
 			double edgeSum = 0;
 			for (int i= 0; i < allTowns.size(); i++){
 				if (!path.contains(allTowns.get(i))){
+					double least1 = 10000;
+					double least2 = 10000;
 					for (int j = 0; j < allTowns.size(); j++){
-						double least1 = 10000;
-						double least2 = 10000;
+						
 						if (i!=j){
 							if (distances[i][j] < least1){
 								least2 = least1;
 								least1 = distances[i][j];
 							}
 						}
-						edgeSum += least1 + least2;
+						
 					}
+					edgeSum += least1 + least2;
 				}
 					
 			}
