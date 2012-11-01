@@ -169,6 +169,8 @@ public class TspTask implements Serializable{
 						double newSumPath = sumPathLength+(distances[path.get(path.size()-1)][newPath.get(newPath.size()-1)]);  //distance between the next town to visit and the previous one
 						//System.out.println("newPath" +newPath+" with length " + newSumPath);	
 						//TspExplorer localTask = new TspExplorer((Object)new TspInputArg(newPath, distances, newSumPath, allTowns ,levelToSplitAt));
+						System.out.println("Upper bound:   " + (newSumPath + getLeastRemaning(newPath, allTowns, distances)));
+						
 						if (newSumPath + distances[0][newPath.get(newPath.size()-1)] < (Double) sharedTsp.getShared()){
 							localTsp(new TspInputArg(newPath, distances, newSumPath, allTowns ,levelToSplitAt));
 						}
@@ -193,6 +195,28 @@ public class TspTask implements Serializable{
 			}			
 			return new TspReturn(currentShortestPath, currentShortestPathLength);
 		}
+		
+		public double getLeastRemaning(ArrayList<Integer> path, ArrayList<Integer> allTowns, double[][] distances){
+			double edgeSum = 0;
+			for (int i= 0; i < allTowns.size(); i++){
+				if (!path.contains(allTowns.get(i))){
+					for (int j = 0; j < allTowns.size(); j++){
+						double least1 = 10000;
+						double least2 = 10000;
+						if (i!=j){
+							if (distances[i][j] < least1){
+								least2 = least1;
+								least1 = distances[i][j];
+							}
+						}
+						edgeSum += least1 + least2;
+					}
+				}
+					
+			}
+			return edgeSum;	
+		}
+			
 		
 		public Shared findInitialShortPath (){
 			

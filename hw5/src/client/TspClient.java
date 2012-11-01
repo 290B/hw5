@@ -42,10 +42,10 @@ public class TspClient {
 		{ 6, 3 },
 		{ 6, 6 },
 		{ 3, 6 },
-		{ 4, 4 },
-		{ 5, 4 },
-		{ 5, 5 },
-		{ 4, 5 }
+		//{ 4, 4 },
+		//{ 5, 4 },
+		//{ 5, 5 },
+		//{ 4, 5 }
 		};
 	
     public static void main(String args[]) {
