@@ -83,7 +83,7 @@ public class TspClientStandalone {
     		System.out.println("Average time: " + total/tries);
     		       	
 
-            /*
+            
     		JLabel euclideanTspLabel = displayEuclideanTspTaskReturnValue( towns, tour );
             JFrame frame = new JFrame( "Result Visualizations" );
             frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -92,7 +92,7 @@ public class TspClientStandalone {
             container.add( new JScrollPane( euclideanTspLabel ), BorderLayout.EAST );
             frame.pack();
             frame.setVisible( true );
-            */
+            
             try{
             	space.exit();
             }

@@ -4,7 +4,7 @@
 			  <!-- git testibg --> 
 
 	
-<project name="homework1" default="dist" basedir=".">
+<project name="homework5" default="dist" basedir=".">
 	
 
 	  <!-- set global properties for this build -->
@@ -16,7 +16,7 @@
 	
 
 		
-	<property name="host" value="snoopy"/>
+	<property name="host" value="localhost"/>
 
 	<property name="computer1" value="elroy.cs.ucsb.edu" />
 	<property name="computer2" value="kenny.cs.ucsb.edu" />

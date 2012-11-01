@@ -151,9 +151,6 @@ public class TspTask implements Serializable{
 		public TspReturn localTsp(TspInputArg inn){
 			
 			sharedTsp = (SharedTsp)getShared();
-			if ((Double) sharedTsp.getShared() < currentShortestPathLength){
-				currentShortestPathLength = (Double) sharedTsp.getShared();
-			}
 		    ArrayList<Integer> path = inn.getPath();
 		    double [][] distances = inn.getDistances();
 		    double sumPathLength = inn.getSumPathLength();
@@ -172,7 +169,7 @@ public class TspTask implements Serializable{
 						double newSumPath = sumPathLength+(distances[path.get(path.size()-1)][newPath.get(newPath.size()-1)]);  //distance between the next town to visit and the previous one
 						//System.out.println("newPath" +newPath+" with length " + newSumPath);	
 						//TspExplorer localTask = new TspExplorer((Object)new TspInputArg(newPath, distances, newSumPath, allTowns ,levelToSplitAt));
-						if (newSumPath + distances[0][newPath.get(newPath.size()-1)] < currentShortestPathLength){
+						if (newSumPath + distances[0][newPath.get(newPath.size()-1)] < (Double) sharedTsp.getShared()){
 							localTsp(new TspInputArg(newPath, distances, newSumPath, allTowns ,levelToSplitAt));
 						}
 						
@@ -186,7 +183,7 @@ public class TspTask implements Serializable{
 			else if (path.size() == distances.length){
 				sumPathLength += (distances[path.get(path.size()-1)][0]); //adding the length back to town -
 				
-				if (sumPathLength <= currentShortestPathLength){
+				if (sumPathLength <= (Double) sharedTsp.getShared()){
 					currentShortestPathLength = sumPathLength;
 					ArrayList<Integer> tempPath = new ArrayList<Integer>();
 					tempPath.addAll(path);
