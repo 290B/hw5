@@ -81,6 +81,7 @@ public class TspTask implements Serializable{
 		    
 		  if (path.size() == 1){
 				setShared(findInitialShortPath());
+				System.out.println("Should be less than 30...  :  " + getLeastRemaning(path, allTowns, distances));
 				
 			}
 		   
