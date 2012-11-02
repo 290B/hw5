@@ -207,7 +207,7 @@ public class TspTask implements Serializable{
 						
 						if (i!=j && ((!path.contains(allTowns.get(j)) || (allTowns.get(j) == 0 || (allTowns.get(j) == path.get(path.size()-1)))))){
 							if (distances[i][j] < least1){
-								System.out.println("First shortest");
+								//System.out.println("First shortest");
 								least2 = least1;
 								least1 = distances[i][j];
 							}
@@ -223,7 +223,7 @@ public class TspTask implements Serializable{
 				
 				if (!path.contains(allTowns.get(j))){
 					if (distances[i][j] < least){
-						System.out.println("Second shortest");
+						//System.out.println("Second shortest");
 						least = distances[i][j];
 					}
 				}
@@ -234,7 +234,7 @@ public class TspTask implements Serializable{
 			for (int j = 0; j < allTowns.size(); j++){ // edge from start edge to edge not visited
 				if (!path.contains(allTowns.get(j))){
 					if (distances[i][j] < least){
-						System.out.println("Third shortest");
+						//System.out.println("Third shortest");
 						least = distances[i][j];
 					}
 				}
