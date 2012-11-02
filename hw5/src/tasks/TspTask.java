@@ -201,8 +201,8 @@ public class TspTask implements Serializable{
 			double edgeSum = 0;
 			for (int i= 0; i < allTowns.size(); i++){ // Finds two shortest edges from each unvisited edge
 				if (!path.contains(allTowns.get(i))){
-					double least1 = 20000;
-					double least2 = 10000;
+					double least1 = 1000;
+					double least2 = 1000;
 					for (int j = 0; j < allTowns.size(); j++){
 						
 						if (i!=j && ((!path.contains(allTowns.get(j)) || (allTowns.get(j) == 0 || (allTowns.get(j) == path.get(path.size()-1)))))){
@@ -217,7 +217,7 @@ public class TspTask implements Serializable{
 				}
 				
 			}
-			double least = 30000;
+			double least = 1000;
 			int i = 0; // first node
 			for (int j = 0; j < allTowns.size(); j++){ // edge from start edge to edge not visited
 				
