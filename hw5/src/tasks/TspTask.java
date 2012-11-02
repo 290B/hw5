@@ -205,7 +205,7 @@ public class TspTask implements Serializable{
 					double least2 = 10000;
 					for (int j = 0; j < allTowns.size(); j++){
 						
-						if (path.get(i)!=allTowns.get(j) && ((!path.contains(allTowns.get(j)) || (allTowns.get(j) == 0 || (allTowns.get(j) == path.get(path.size()-1)))))){
+						if (i!=j && ((!path.contains(allTowns.get(j)) || (allTowns.get(j) == 0 || (allTowns.get(j) == path.get(path.size()-1)))))){
 							if (distances[i][j] < least1){
 								System.out.println("First shortest");
 								least2 = least1;
