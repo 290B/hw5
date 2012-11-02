@@ -109,8 +109,13 @@ public class TspTask implements Serializable{
 							//System.out.println("newPath" +newPath+" with length " + newSumPath);	
 							
 							//if (newSumPath < currentBestValues.getSumPathLength()){
-							//if (newSumPath <= (Double) sharedTsp.getShared()){ //TODO HERE
-							if (newSumPath + getLeastRemaning(newPath, allTowns, distances) <= (Double) sharedTsp.getShared()){ //TODO HERE
+							if (newPath.size() == distances.length -1) {
+								System.out.println("Lower bound:   " + (newSumPath + getLeastRemaning(newPath, allTowns, distances)));
+							}
+							
+							if (newSumPath <= (Double) sharedTsp.getShared()){ //TODO HERE
+							
+							//if (newSumPath + getLeastRemaning(newPath, allTowns, distances) <= (Double) sharedTsp.getShared()){ //TODO HERE
 							
 								//currentBestValues.settSumPathLength(newSumPath);
 								currentBestValues.setPath(newPath);
@@ -170,10 +175,12 @@ public class TspTask implements Serializable{
 						double newSumPath = sumPathLength+(distances[path.get(path.size()-1)][newPath.get(newPath.size()-1)]);  //distance between the next town to visit and the previous one
 						//System.out.println("newPath" +newPath+" with length " + newSumPath);	
 						//TspExplorer localTask = new TspExplorer((Object)new TspInputArg(newPath, distances, newSumPath, allTowns ,levelToSplitAt));
-						//System.out.println("Lower bound:   " + (newSumPath + getLeastRemaning(newPath, allTowns, distances)));
+						if (newPath.size() == distances.length -1) {
+							System.out.println("Lower bound:   " + (newSumPath + getLeastRemaning(newPath, allTowns, distances)));
+						}
 						
-						//if (newSumPath <= (Double) sharedTsp.getShared()){
-						if (newSumPath + getLeastRemaning(newPath, allTowns, distances) <= (Double) sharedTsp.getShared()){
+						if (newSumPath <= (Double) sharedTsp.getShared()){
+						//if (newSumPath + getLeastRemaning(newPath, allTowns, distances) <= (Double) sharedTsp.getShared()){
 							
 							localTsp(new TspInputArg(newPath, distances, newSumPath, allTowns ,levelToSplitAt));
 						}
