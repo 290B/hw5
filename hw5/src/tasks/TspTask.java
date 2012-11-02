@@ -174,6 +174,7 @@ public class TspTask implements Serializable{
 						//TspExplorer localTask = new TspExplorer((Object)new TspInputArg(newPath, distances, newSumPath, allTowns ,levelToSplitAt));
 						if (newPath.size() == distances.length -1) {
 							System.out.println("Lower bound:   " + (newSumPath + getLeastRemaning(newPath, allTowns, distances)));
+							System.out.println("And the upper bound is:   " + (Double) sharedTsp.getShared());
 						}
 						
 						//if (newSumPath <= (Double) sharedTsp.getShared()){
