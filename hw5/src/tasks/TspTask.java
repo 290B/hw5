@@ -174,7 +174,7 @@ public class TspTask implements Serializable{
 						
 						if (newSumPath <= (Double) sharedTsp.getShared()){
 						//if (newSumPath + getLeastRemaning(newPath, allTowns, distances) <= (Double) sharedTsp.getShared()){
-							System.out.println("Upper bound:   " + (newSumPath + getLeastRemaning(newPath, allTowns, distances)));
+							
 							localTsp(new TspInputArg(newPath, distances, newSumPath, allTowns ,levelToSplitAt));
 						}
 						
@@ -193,6 +193,7 @@ public class TspTask implements Serializable{
 					ArrayList<Integer> tempPath = new ArrayList<Integer>();
 					tempPath.addAll(path);
 					currentShortestPath = tempPath;
+					System.out.println("New minimum value! Lower bound:   " + (sumPathLength + getLeastRemaning(tempPath, allTowns, distances)));
 					setShared(new SharedTsp(sumPathLength));
 				}
 			}			
