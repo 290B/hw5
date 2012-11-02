@@ -237,7 +237,7 @@ public class TspTask implements Serializable{
 			}
 			edgeSum += least;
 			least = 1000;
-			i = path.size();
+			i = path.size()-1;
 			for (int j = 0; j < allTowns.size(); j++){ // edge from start edge to edge not visited
 				if (!path.contains(allTowns.get(j))){
 					if (distances[i][j] < least){
