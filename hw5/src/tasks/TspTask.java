@@ -109,9 +109,6 @@ public class TspTask implements Serializable{
 							//System.out.println("newPath" +newPath+" with length " + newSumPath);	
 							
 							//if (newSumPath < currentBestValues.getSumPathLength()){
-							if (newPath.size() == distances.length -1) {
-								System.out.println("Lower bound:   " + (newSumPath + getLeastRemaning(newPath, allTowns, distances)));
-							}
 							
 							if (newSumPath <= (Double) sharedTsp.getShared()){ //TODO HERE
 							
