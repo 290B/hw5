@@ -109,8 +109,8 @@ public class TspTask implements Serializable{
 							//System.out.println("newPath" +newPath+" with length " + newSumPath);	
 							
 							//if (newSumPath < currentBestValues.getSumPathLength()){
-							
-							if (newSumPath + getLeastRemaning(newPath, allTowns, distances)-0.1 <= (Double) sharedTsp.getShared()){ //TODO HERE
+							if (newSumPath <= (Double) sharedTsp.getShared()){ //TODO HERE
+							//if (newSumPath + getLeastRemaning(newPath, allTowns, distances)-0.1 <= (Double) sharedTsp.getShared()){ //TODO HERE
 							
 								//currentBestValues.settSumPathLength(newSumPath);
 								currentBestValues.setPath(newPath);
@@ -172,7 +172,9 @@ public class TspTask implements Serializable{
 						//TspExplorer localTask = new TspExplorer((Object)new TspInputArg(newPath, distances, newSumPath, allTowns ,levelToSplitAt));
 						//System.out.println("Upper bound:   " + (newSumPath + getLeastRemaning(newPath, allTowns, distances)));
 						
-						if (newSumPath + getLeastRemaning(newPath, allTowns, distances)-0.1 <= (Double) sharedTsp.getShared()){
+						if (newSumPath <= (Double) sharedTsp.getShared()){
+						//if (newSumPath + getLeastRemaning(newPath, allTowns, distances) <= (Double) sharedTsp.getShared()){
+							System.out.println("Upper bound:   " + (newSumPath + getLeastRemaning(newPath, allTowns, distances)));
 							localTsp(new TspInputArg(newPath, distances, newSumPath, allTowns ,levelToSplitAt));
 						}
 						
