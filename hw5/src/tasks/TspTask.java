@@ -176,8 +176,8 @@ public class TspTask implements Serializable{
 							System.out.println("Lower bound:   " + (newSumPath + getLeastRemaning(newPath, allTowns, distances)));
 						}
 						
-						if (newSumPath <= (Double) sharedTsp.getShared()){
-						//if (newSumPath + getLeastRemaning(newPath, allTowns, distances) <= (Double) sharedTsp.getShared()){
+						//if (newSumPath <= (Double) sharedTsp.getShared()){
+						if (newSumPath + getLeastRemaning(newPath, allTowns, distances) <= (Double) sharedTsp.getShared()){
 							
 							localTsp(new TspInputArg(newPath, distances, newSumPath, allTowns ,levelToSplitAt));
 						}
