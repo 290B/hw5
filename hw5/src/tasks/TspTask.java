@@ -199,6 +199,9 @@ public class TspTask implements Serializable{
 		
 		public double getLeastRemaning(ArrayList<Integer> path, ArrayList<Integer> allTowns, double[][] distances){
 			double edgeSum = 0;
+			if (path.size() == allTowns.size()){
+				return 0;
+			}
 			for (int i= 0; i < allTowns.size(); i++){ // Finds two shortest edges from each unvisited edge
 				if (!path.contains(allTowns.get(i))){
 					double least1 = 1000;
@@ -213,6 +216,7 @@ public class TspTask implements Serializable{
 							}
 						}
 					}
+					
 					edgeSum += least1 + least2;
 				}
 				
