@@ -29,8 +29,8 @@
 	<property name="computer8" value="linus.cs.ucsb.edu" />
 	
 	  <!-- codebase properties --> 
-  <property name="file_codebase" location="/cs/student/torgel/public_html/290b/hw4/src/" />
-  <property name="web_codebase" value="http://www.cs.ucsb.edu/~torgel/290b/hw4/src/" />
+  <property name="file_codebase" location="c:\javadist\hw5\" />
+  <property name="web_codebase" value="file:/c:\javadist\hw5\" />
 	
   <target name="compile" description="compile the source">
     <!-- Create the build directory structure used by compile -->
