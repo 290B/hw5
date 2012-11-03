@@ -155,6 +155,18 @@
 	  	</java>
 	  </target>
 	
+   
+  <target name="mandelbrot" depends="dist" description="Start a mandelbrot task" >
+  	<java classname="client.MandelbrotClient" fork="true">
+  	  <jvmarg value="-Djava.rmi.server.codebase=${web_codebase}"/>
+  	  <jvmarg value="-Djava.security.policy=policy"/>
+  	  <arg value="${host}"/>
+  	  <classpath>
+  	    <pathelement location="dist/client.jar"/>
+  	  </classpath>
+  	</java>
+  </target>
+  
   <target name="clean" description="clean up" >
     <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>

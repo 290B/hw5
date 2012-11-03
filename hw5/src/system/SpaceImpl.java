@@ -60,6 +60,13 @@ public class SpaceImpl implements Space, Worker2Space, proxy{
 		Closure root = new Closure(task, 0, finalResult, getID());
 		readyQ.add(root);
 	}
+public void put(Task task) throws RemoteException {
+		//  Create a Closure object and insert to readyQ
+		System.out.println("Task recieved...");
+		Continuation finalResult = new Continuation(0,0);
+		Closure root = new Closure(task, 0, finalResult, getID());
+		readyQ.add(root);
+	}
 	
 	@Override
 	public Object take() throws RemoteException, InterruptedException {
