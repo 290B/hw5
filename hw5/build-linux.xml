@@ -12,11 +12,11 @@
 	<property name="src" location="src"/>
 	<property name="build" location="build"/>
 	<property name="dist"  location="dist"/>
-	<property name="projectpath" location="/home/tor/git/hw5/hw5/ "/>
+	<property name="projectpath" location="/cs/student/torgel/temp/hw5experiment/hw5/hw5/ "/>
 	
 
 		
-	<property name="host" value="localhost"/>
+	<property name="host" value="kyle"/>
 
 	<property name="computer1" value="elroy.cs.ucsb.edu" />
 	<property name="computer2" value="kenny.cs.ucsb.edu" />
@@ -81,6 +81,17 @@
   	  </classpath>
   	</java>
   </target>  
+  
+      <target name="multiworker" depends="dist" description="Start a worker for each core" >
+  	<java classname="system.MultiWorkerImpl" fork="true">
+  	  <jvmarg value="-Djava.rmi.server.codebase=${web_codebase}"/>
+  	  <jvmarg value="-Djava.security.policy=policy"/>
+  	  <arg value="${host}"/>
+  	  <classpath>
+  	    <pathelement location="dist/system.jar"/>
+  	  </classpath>
+  	</java>
+  </target> 
 
 	<target name = "8workers" depends="dist" description = "Start 8 Workers">
 		
@@ -137,6 +148,39 @@
 				<sshexec host="${computer14}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
 				<sshexec host="${computer15}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
 				<sshexec host="${computer16}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				
+			</parallel>
+	</target>
+	
+		<target name = "16multiworkers" depends="dist" description = "Start 16 Workers on different machines">
+			
+			<input message="enter username:" addproperty="username">
+			    <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+			</input>
+
+			
+			<input message="enter password:" addproperty="pw">
+			    <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+			</input>
+			
+			<parallel>
+			  	  <!-- <sshexec host="${host}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant space"/> --> 
+				<sshexec host="${computer1}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer2}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer3}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer4}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer5}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer6}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer7}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer8}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>				
+				<sshexec host="${computer9}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer10}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer11}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer12}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer13}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer14}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer15}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
+				<sshexec host="${computer16}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant multiworker"/>
 				
 			</parallel>
 	</target>
