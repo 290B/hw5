@@ -78,7 +78,7 @@ public class TspClient {
 //		{4,6}
 //		};
 	
-	// Test set with 131 cities
+	// Test set with 30 cities
 		{
 		{0,13},
 		{0,26},

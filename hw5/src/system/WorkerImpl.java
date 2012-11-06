@@ -18,9 +18,9 @@ public class WorkerImpl implements Worker, Serializable {
     public Shared shared;
 	private static Worker2Space space;
 	private static final long serialVersionUID = 227L;
-	private static final BlockingQueue sharedQ = new LinkedBlockingQueue();
-	private static final BlockingDeque localQ = new LinkedBlockingDeque(); // Contains closure
-	private static final BlockingDeque doneQ = new LinkedBlockingDeque();  // Contains WorkerResults
+	private final BlockingQueue sharedQ = new LinkedBlockingQueue();
+	private final BlockingDeque localQ = new LinkedBlockingDeque(); // Contains closure
+	private final BlockingDeque doneQ = new LinkedBlockingDeque();  // Contains WorkerResults
 	private static final int LOCAL_QUEUE_LENGTH = 2;
 	
 	public static void main(String[] args) {
@@ -146,7 +146,6 @@ public class WorkerImpl implements Worker, Serializable {
 			while(true){
 			try {
 				Shared proposedShared = (Shared)sharedQ.take();
-				System.out.println("received in worker impl");
 				if (proposedShared.isNewerThan(shared)){
 					Shared sharedFromSpace;
 					try {

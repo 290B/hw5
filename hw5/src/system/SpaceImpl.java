@@ -88,7 +88,7 @@ public void put(Task task) throws RemoteException {
 		
 		
 	}
-	public void putWaitMap(Closure closure) {
+	synchronized public void putWaitMap(Closure closure) {
 		//System.out.println("Placing closure in wait map...");
 		waitMap.put(closure.ID, closure);
 	}

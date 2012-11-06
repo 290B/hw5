@@ -109,19 +109,15 @@ public class MandelbrotSetTask extends DAC implements java.io.Serializable{
 	}
 	public class Compose extends DAC implements Task, Serializable{
 		private static final long serialVersionUID = 227L;
-		
-		//Object args;
 		public Object execute() {
 			
 			Object [] results = (Object [])args;
-			System.out.println("Composing... args has length " + results.length);
 			int [][] upperLeft = (int [][])results[0];
 			int [][] upperRight = (int [][])results[1];
 			int [][] lowerLeft = (int [][])results[2];
 			int [][] lowerRight = (int [][])results[3];
 			
 			int length = lowerLeft[0].length;
-			System.out.println("Composing squares of length " + length);
 			int [][] count = new int[length*2][length*2];
 			for (int x = 0; x < length; x++){
 				for (int y = 0; y < length; y++){

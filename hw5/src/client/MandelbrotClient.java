@@ -25,7 +25,7 @@ public class MandelbrotClient {
 	private static final double CORNER_X = -0.7510975859375;
 	private static final double CORNER_Y = 0.1315680625;
 	private static final double EDGE_LENGTH = 0.01611;
-	private static final int DEPTH = 2;
+	private static final int DEPTH = 3;
 	
 	public static void main(String[] args) {
 		if (System.getSecurityManager() == null ){ 
