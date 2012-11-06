@@ -51,66 +51,66 @@ public class TspClient {
 //		};
 			
 //       Homework 5			
-//		{
-//		{1,1},
-//		{1,2},
-//		{1,3},
-//		{1,4},
-//		{1,5},
-//		{1,6},
-//		{2,1},
-//		{2,2},
-//		{2,3},
-//		{2,4},
-//		{2,5},
-//		{2,6},
-//		{3,1},
-//		{3,2},
-//		{3,3},
-//		{3,4},
-//		{3,5},
-//		{3,6},
-//		{4,1},
-//		{4,2},
-//		{4,3},
-//		{4,4},
-//		{4,5},
-//		{4,6}
-//		};
+		{
+		{1,1},
+		{1,2},
+		{1,3},
+		{1,4},
+		{1,5},
+		{1,6},
+		{2,1},
+		{2,2},
+		{2,3},
+		{2,4},
+		{2,5},
+		{2,6},
+		{3,1},
+		{3,2},
+		{3,3},
+		{3,4},
+		{3,5},
+		{3,6},
+		{4,1},
+		{4,2},
+		{4,3},
+		{4,4},
+		{4,5},
+		{4,6}
+		};
 	
 	// Test set with 30 cities
-		{
-		{0,13},
-		{0,26},
-		{0,27},
-		{0,39},
-		{2,0},
-		{5,13},
-		{5,19},
-		{5,25},
-		{5,31},
-		{5,37},
-		{5,43},
-		{5,8},
-		{8,0},
-		{9,10},
-		{10,10},
-		{11,10},
-		{12,10},
-		{12,5},
-		{15,13},
-		{15,19},
-		{15,25},
-		{15,31},
-		{15,37},
-		{15,43},
-		{15,8},
-		{18,11},
-		{18,13},
-		{18,15},
-		{18,17},
-		{18,19},
-};
+//		{
+//		{0,13},
+//		{0,26},
+//		{0,27},
+//		{0,39},
+//		{2,0},
+//		{5,13},
+//		{5,19},
+//		{5,25},
+//		{5,31},
+//		{5,37},
+//		{5,43},
+//		{5,8},
+//		{8,0},
+//		{9,10},
+//		{10,10},
+//		{11,10},
+//		{12,10},
+//		{12,5},
+//		{15,13},
+//		{15,19},
+//		{15,25},
+//		{15,31},
+//		{15,37},
+//		{15,43},
+//		{15,8},
+//		{18,11},
+//		{18,13},
+//		{18,15},
+//		{18,17},
+//		{18,19},
+//};
 	
 	
     public static void main(String args[]) {
@@ -122,7 +122,9 @@ public class TspClient {
         try {
         	
 
-        	int tries = 1;
+        	int tries = 10;
+        	int doesntCount = 2;
+        	
         	
         	String name = "Space";
     		Registry registry = LocateRegistry.getRegistry(args[0]);
@@ -136,9 +138,11 @@ public class TspClient {
         		tour = runJob (space,towns,whichLevelToSplitAt);
     			long stop = System.currentTimeMillis();
     			System.out.println("TSP, " + (i+1) +" try: " +(stop-start) +" milliseconds");
-    			total += (stop-start);
+    			if (tries >= doesntCount){
+    				total += (stop-start);		
+    			}
     		}
-    		System.out.println("Average time: " + total/tries);
+    		System.out.println("Average time: " + total/(tries-doesntCount));
     		       	
 
             JLabel euclideanTspLabel = displayEuclideanTspTaskReturnValue( towns, tour );
