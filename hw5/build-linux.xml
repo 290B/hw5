@@ -12,7 +12,7 @@
 	<property name="src" location="src"/>
 	<property name="build" location="build"/>
 	<property name="dist"  location="dist"/>
-	<property name="projectpath" location="/cs/student/orein/git/hw4/hw4-cluster "/>
+	<property name="projectpath" location="/home/tor/git/hw5/hw5/ "/>
 	
 
 		
@@ -22,11 +22,21 @@
 	<property name="computer2" value="kenny.cs.ucsb.edu" />
 	<property name="computer3" value="dagwood.cs.ucsb.edu" />
 	<property name="computer4" value="calvin.cs.ucsb.edu" />
-	 <!-- Not available:   ella   , joplin  -->
+
 	<property name="computer5" value="brain.cs.ucsb.edu" />
 	<property name="computer6" value="tygra.cs.ucsb.edu" />
 	<property name="computer7" value="cartman.cs.ucsb.edu" />
 	<property name="computer8" value="linus.cs.ucsb.edu" />
+	
+	<property name="computer9" value="popeye.cs.ucsb.edu" />
+	<property name="computer10" value="scooby.cs.ucsb.edu" />
+	<property name="computer11" value="whiley.cs.ucsb.edu" />
+	<property name="computer12" value="blondie.cs.ucsb.edu" />
+		
+	<property name="computer13" value="dudley.cs.ucsb.edu" />
+	<property name="computer14" value="tick.cs.ucsb.edu" />
+	<property name="computer15" value="beavis.cs.ucsb.edu" />
+	<property name="computer16" value="bullwinkle.cs.ucsb.edu" />
 	
 	  <!-- codebase properties --> 
 	<property name="file_codebase" location="/cs/student/torgel/public_html/290b/hw4/src/" />
@@ -93,8 +103,77 @@
 			<sshexec host="${computer2}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
 			<sshexec host="${computer3}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
 			<sshexec host="${computer4}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+
 		</parallel>
 	</target>
+	
+	
+	<target name = "16workers" depends="dist" description = "Start 16 Workers on different machines">
+			
+			<input message="enter username:" addproperty="username">
+			    <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+			</input>
+
+			
+			<input message="enter password:" addproperty="pw">
+			    <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+			</input>
+			
+			<parallel>
+			  	  <!-- <sshexec host="${host}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant space"/> --> 
+				<sshexec host="${computer1}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer2}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer3}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer4}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer5}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer6}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer7}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer8}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>				
+				<sshexec host="${computer9}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer10}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer11}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer12}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer13}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer14}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer15}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				<sshexec host="${computer16}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant worker"/>
+				
+			</parallel>
+	</target>
+	
+		<target name = "killRemoteWorkers" depends="dist" description = "kills remote processes in case of SHTF">
+			
+			<input message="enter username:" addproperty="username">
+			    <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+			</input>
+
+			
+			<input message="enter password:" addproperty="pw">
+			    <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
+			</input>
+			
+			<parallel>
+			  	  <!-- <sshexec host="${host}" username="${username}" password="${pw}" trust="true" command="cd ${projectpath}; ant space"/> --> 
+				<sshexec host="${computer1}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer2}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer3}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer4}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer5}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer6}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer7}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer8}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>				
+				<sshexec host="${computer9}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer10}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer11}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer12}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer13}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer14}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer15}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				<sshexec host="${computer16}" username="${username}" password="${pw}" trust="true" command="pkill -u ${username}"/>
+				
+			</parallel>
+	</target>
+	
 	
   <target name="space" depends="dist" description="Start a space" >
   	<java classname="system.SpaceImpl" fork="true">
@@ -102,24 +181,25 @@
   	  <jvmarg value="-Djava.security.policy=policy"/>
   	  <classpath>
   	    <pathelement location="dist/system.jar"/>
-  	  <pathelement location="dist/client.jar"/>
+  	  	<pathelement location="dist/client.jar"/>
   	  </classpath>
   	</java>
   </target>  
   
   <target name="fib" depends="dist" description="Start a fib task" >
-  	<java classname="client.ClientImpl" fork="true">
+  	<java classname="client.FibClient" fork="true">
   	  <jvmarg value="-Djava.rmi.server.codebase=${web_codebase}"/>
   	  <jvmarg value="-Djava.security.policy=policy"/>
   	  <arg value="${host}"/>
   	  <classpath>
+  	     <pathelement location="dist/system.jar"/>
   	    <pathelement location="dist/client.jar"/>
   	  </classpath>
   	</java>
   </target>
 	
 	 <target name="fibStandalone" depends="dist" description="Start a fib task in one JVM" >
-	  	<java classname="client.ClientImplStandalone" fork="true">
+	  	<java classname="client.FibClientImplStandalone" fork="true">
 	  	  <jvmarg value="-Djava.rmi.server.codebase=${web_codebase}"/>
 	  	  <jvmarg value="-Djava.security.policy=policy"/>
 	  	  <arg value="${host}"/>
@@ -163,7 +243,8 @@
   	  <arg value="${host}"/>
   	  <classpath>
   	    <pathelement location="dist/client.jar"/>
-  	  </classpath>
+  	   	<pathelement location="dist/system.jar"/>
+  	    </classpath>
   	</java>
   </target>
   
