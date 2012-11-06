@@ -5,7 +5,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import api.DAC;
@@ -17,6 +19,9 @@ public class WorkerImpl implements Worker, Serializable {
 	private static Worker2Space space;
 	private static final long serialVersionUID = 227L;
 	private static final BlockingQueue sharedQ = new LinkedBlockingQueue();
+	private static final BlockingDeque localQ = new LinkedBlockingDeque(); // Contains closure
+	private static final BlockingDeque doneQ = new LinkedBlockingDeque();  // Contains WorkerResults
+	private static final int LOCAL_QUEUE_LENGTH = 1;
 	
 	public static void main(String[] args) {
 		String spaceHost = args[0];
@@ -44,6 +49,8 @@ public class WorkerImpl implements Worker, Serializable {
 			System.out.println("WorkerImpl bound");
 			SharedProxy sharedProxy = ((WorkerImpl)worker).new SharedProxy();
 			sharedProxy.start();
+			Executer executer = ((WorkerImpl)worker).new Executer((WorkerImpl)worker);
+			executer.start();
 		} catch (Exception e) {
             System.err.println("WorkerImpl exception:");
             e.printStackTrace();
@@ -91,6 +98,43 @@ public class WorkerImpl implements Worker, Serializable {
 			System.exit(0);
 		}
 	}
+	public class Executer extends Thread{
+		Closure closure;
+		WorkerImpl myWorker;
+		public Executer(WorkerImpl myworker){
+			this.myWorker = myWorker;
+		}
+		public void run(){
+			while(true){
+				try {
+					closure = (Closure)localQ.takeFirst();
+					Task task = closure.t;
+					Object [] args  = closure.args;
+					DAC t = (DAC) task;
+					if (t.args == null) t.args = args;
+					t.setWorker(myWorker);
+					try {
+						Shared sharedTemp = space.getShared(); 
+						shared = sharedTemp.clone();
+					} catch (RemoteException e) {
+						System.out.println("Space could not send Shared to worker");
+					} catch(CloneNotSupportedException e){
+						System.out.println("Could not clone...");
+					}
+					System.out.println("Executing task...");
+					task.execute();
+					doneQ.addLast(new WorkerResult(t.spawn, t.spawn_next, t.spawn_nextJoin , t.send_argument));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.exit(0);
+				}
+				
+			}
+			
+		}
+		
+	}
+	
 	
 	public class SharedProxy extends Thread{
 		public SharedProxy(){}
@@ -130,5 +174,22 @@ public class WorkerImpl implements Worker, Serializable {
 		}
 		
 		
+	}
+	public boolean put(Closure closure) throws RemoteException {
+		try {
+			System.out.println("remote call on put");
+			if (localQ.size() < LOCAL_QUEUE_LENGTH){
+				localQ.putLast(closure);
+				return true;
+			}else{
+				return false;
+			}
+			
+		} catch (InterruptedException e) {
+			return false;
+		}
+	}
+	public WorkerResult take() throws RemoteException, InterruptedException {
+		return (WorkerResult) doneQ.take();
 	}
 }
