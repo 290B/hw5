@@ -16,7 +16,7 @@
 	
 
 		
-	<property name="host" value="kyle"/>
+	<property name="host" value="bullwinkle"/>
 
 	<property name="computer1" value="elroy.cs.ucsb.edu" />
 	<property name="computer2" value="kenny.cs.ucsb.edu" />
@@ -34,9 +34,9 @@
 	<property name="computer12" value="blondie.cs.ucsb.edu" />
 		
 	<property name="computer13" value="dudley.cs.ucsb.edu" />
-	<property name="computer14" value="tick.cs.ucsb.edu" />
+	<property name="computer14" value="eeyore.cs.ucsb.edu" />
 	<property name="computer15" value="beavis.cs.ucsb.edu" />
-	<property name="computer16" value="bullwinkle.cs.ucsb.edu" />
+	<property name="computer16" value="kyle.cs.ucsb.edu" />
 	
 	  <!-- codebase properties --> 
 	<property name="file_codebase" location="/cs/student/torgel/public_html/290b/hw4/src/" />
@@ -152,7 +152,7 @@
 			</parallel>
 	</target>
 	
-		<target name = "16multiworkers" depends="dist" description = "Start 16 Workers on different machines">
+		<target name = "16workMulti" depends="dist" description = "Start 16 Workers on different machines">
 			
 			<input message="enter username:" addproperty="username">
 			    <handler classname="org.apache.tools.ant.input.SecureInputHandler" />
@@ -279,6 +279,19 @@
 	  	</java>
 	  </target>
 	
+
+<target name="spacepref" depends="dist" description="Start a space and enable prefetching" >
+  	<java classname="system.SpaceImpl" fork="true">
+  	  <jvmarg value="-Djava.rmi.server.codebase=${web_codebase}"/>
+  	  <jvmarg value="-Djava.security.policy=policy"/>
+  	  <arg value="prefetching"/>
+  	  <classpath>
+  	    <pathelement location="dist/system.jar"/>
+  	  <pathelement location="dist/client.jar"/>
+  	  </classpath>
+  	</java>
+  </target>
+  
    
   <target name="mandelbrot" depends="dist" description="Start a mandelbrot task" >
   	<java classname="client.MandelbrotClient" fork="true">
