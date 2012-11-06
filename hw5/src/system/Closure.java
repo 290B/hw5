@@ -1,7 +1,10 @@
 package system;
+import java.io.Serializable;
+
 import api.Task;
 
-public class Closure {
+public class Closure implements Serializable{
+	private static final long serialVersionUID = 227L;
 	public Task t;
 	public int joinCounter;
 	public Object [] args; // is an array

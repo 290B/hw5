@@ -15,7 +15,7 @@ import api.Shared;
 import api.Task;
 
 public class WorkerImpl implements Worker, Serializable {
-    private Shared shared;
+    public Shared shared;
 	private static Worker2Space space;
 	private static final long serialVersionUID = 227L;
 	private static final BlockingQueue sharedQ = new LinkedBlockingQueue();
@@ -101,7 +101,7 @@ public class WorkerImpl implements Worker, Serializable {
 	public class Executer extends Thread{
 		Closure closure;
 		WorkerImpl myWorker;
-		public Executer(WorkerImpl myworker){
+		public Executer(WorkerImpl myWorker){
 			this.myWorker = myWorker;
 		}
 		public void run(){
@@ -115,15 +115,21 @@ public class WorkerImpl implements Worker, Serializable {
 					t.setWorker(myWorker);
 					try {
 						Shared sharedTemp = space.getShared(); 
-						shared = sharedTemp.clone();
+						if (sharedTemp != null){
+							myWorker.shared = sharedTemp.clone();
+						}
+						System.out.println("WorkerImpl's shared set");
 					} catch (RemoteException e) {
 						System.out.println("Space could not send Shared to worker");
+						e.printStackTrace();
 					} catch(CloneNotSupportedException e){
 						System.out.println("Could not clone...");
+						e.printStackTrace();
 					}
 					System.out.println("Executing task...");
 					task.execute();
 					doneQ.addLast(new WorkerResult(t.spawn, t.spawn_next, t.spawn_nextJoin , t.send_argument));
+					System.out.println("Finnished executing task and added result to doneQ");
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 					System.exit(0);
@@ -186,6 +192,7 @@ public class WorkerImpl implements Worker, Serializable {
 			}
 			
 		} catch (InterruptedException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

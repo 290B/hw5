@@ -42,7 +42,7 @@ public class SpaceImpl implements Space, Worker2Space, proxy{
 		}
 	}
 	
-	public void put(Task task, Shared sharedIn) throws RemoteException {
+public void put(Task task, Shared sharedIn) throws RemoteException {
 		
 		//TODO create a shared variable here somewhere
 		try {
@@ -126,6 +126,12 @@ public void put(Task task) throws RemoteException {
 			return closure;
 	}
 	
+	synchronized public Closure tryTakeQ() throws InterruptedException {
+		
+		Closure closure = (Closure)readyQ.poll();
+		return closure;
+}
+	
 	public void register(Worker worker) throws RemoteException, InterruptedException {
 		WorkerProxyImpl workerProxy = new WorkerProxyImpl(worker, this);
 		workerProxy.start();
@@ -161,7 +167,10 @@ public void put(Task task) throws RemoteException {
 
 	@Override
 	public Shared getShared() throws RemoteException, CloneNotSupportedException {
-		return shared.clone();
+		if (shared != null){
+			return shared.clone();
+		}
+		return null;
 	}
 	
 	

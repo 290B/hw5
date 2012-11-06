@@ -92,32 +92,36 @@ public class MandelbrotSetTask extends DAC implements java.io.Serializable{
 		}		
 		public Object execute(){
 			if (depth > 0) {
-				spawn(new Split(cornerX, cornerY, edgeLength/2, n, iterLimit, depth-1));
-				spawn(new Split(cornerX+ edgeLength/2, cornerY, edgeLength/2, n, iterLimit, depth-1));
-				spawn(new Split(cornerX, cornerY+edgeLength/2, edgeLength/2, n, iterLimit, depth-1));
-				spawn(new Split(cornerX+edgeLength/2, cornerY+edgeLength/2, edgeLength/2, n, iterLimit, depth-1));
-				spawn_next(new Compose(), 4);
+				spawn(new Split(cornerX, cornerY, edgeLength/2, n/2, iterLimit, depth-1));
+				spawn(new Split(cornerX+ edgeLength/2, cornerY, edgeLength/2, n/2, iterLimit, depth-1));
+				spawn(new Split(cornerX, cornerY+edgeLength/2, edgeLength/2, n/2, iterLimit, depth-1));
+				spawn(new Split(cornerX+edgeLength/2, cornerY+edgeLength/2, edgeLength/2, n/2, iterLimit, depth-1));
+				
 			}else{
-				spawn(new Compute(cornerX, cornerY, edgeLength, n, iterLimit));
-				spawn_next(new Compose(), 1);
+				spawn(new Compute(cornerX, cornerY, edgeLength/2, n/2, iterLimit));
+				spawn(new Compute(cornerX+ edgeLength/2, cornerY, edgeLength/2, n/2, iterLimit));
+				spawn(new Compute(cornerX, cornerY+edgeLength/2, edgeLength/2, n/2, iterLimit));
+				spawn(new Compute(cornerX+edgeLength/2, cornerY+edgeLength/2, edgeLength/2, n/2, iterLimit));
 			}
-			
-			
+			spawn_next(new Compose(), 4);
 			return null;
 		}
 	}
 	public class Compose extends DAC implements Task, Serializable{
 		private static final long serialVersionUID = 227L;
 		
-		Object args;
+		//Object args;
 		public Object execute() {
-			Object [] results = (Object [])args;
-			int [][] lowerLeft = (int [][])results[0];
-			int [][] lowerRight = (int [][])results[1];
-			int [][] upperLeft = (int [][])results[2];
-			int [][] upperRight = (int [][])results[3];
 			
-			int length = lowerLeft[0].length; 
+			Object [] results = (Object [])args;
+			System.out.println("Composing... args has length " + results.length);
+			int [][] upperLeft = (int [][])results[0];
+			int [][] upperRight = (int [][])results[1];
+			int [][] lowerLeft = (int [][])results[2];
+			int [][] lowerRight = (int [][])results[3];
+			
+			int length = lowerLeft[0].length;
+			System.out.println("Composing squares of length " + length);
 			int [][] count = new int[length*2][length*2];
 			for (int x = 0; x < length; x++){
 				for (int y = 0; y < length; y++){

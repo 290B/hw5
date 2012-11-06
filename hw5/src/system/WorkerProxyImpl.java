@@ -64,16 +64,65 @@ public class WorkerProxyImpl extends Thread {
 		Closure closure;
 		while(true){
 			try{
-				closure = spaceImpl.takeQ();
-				try{
-					if (worker.put(closure)){
-						backupQueue.addFirst(closure);
-					}else{
+				System.out.println("before closure = spaceImpl.takeQ()");
+				closure = spaceImpl.tryTakeQ();
+				if (closure != null){
+					System.out.println("After closure = spaceImpl.takeQ()");
+					try{
+						if (worker.put(closure)){
+							backupQueue.addFirst(closure);
+						}else{
+							spaceImpl.putQ(closure);
+							break;
+						}
+					}catch(RemoteException e) {
+						System.out.println("Remote exeption : worker.put(closure)");
+					
 						spaceImpl.putQ(closure);
-						break;
+						while (!backupQueue.isEmpty()){
+							spaceImpl.putQ((Closure)backupQueue.takeFirst());
+						}
+						spaceImpl.unRegister(this);
+						e.printStackTrace();
+						return;
 					}
-				}catch(RemoteException e) {
-					System.out.println("Remote exeption : worker.put(closure)");
+				}else{
+					break;
+				}
+			}catch (InterruptedException e) {
+				System.out.println("WorkerProxyImpl - Space queue error");
+				return;
+			}
+		}
+		System.out.println("Backup queue empty?");
+		if (backupQueue.size() >0){
+			try {
+			
+				closure = (Closure)backupQueue.takeLast();
+				try{
+					System.out.println("Waiting for result by worker.take()");
+					WorkerResult wr = worker.take();
+					if (wr.spawn_next != null){
+						int spawnNextID = spaceImpl.getID();
+						Closure spawnNextClosure = new Closure(wr.spawn_next, wr.spawn_nextJoin, closure.cont, spawnNextID);
+						if (spawnNextClosure.joinCounter > 0){
+							spaceImpl.putWaitMap(spawnNextClosure);
+						}else{
+							spaceImpl.putQ(spawnNextClosure);
+						}
+						int argNumber = 0;
+						while(!wr.spawn.isEmpty()){
+							Continuation cont = new Continuation(spawnNextID, argNumber);
+							Closure spawnClosure = new Closure((Task) wr.spawn.pop(), 0, cont, spaceImpl.getID());
+							spaceImpl.putQ(spawnClosure);
+							argNumber++;
+						}
+					}
+					if (wr.send_argument != null){
+						spaceImpl.placeArgument(closure.cont, wr.send_argument);
+					}
+				
+				}catch(RemoteException e){
 					spaceImpl.putQ(closure);
 					while (!backupQueue.isEmpty()){
 						spaceImpl.putQ((Closure)backupQueue.takeFirst());
@@ -81,47 +130,10 @@ public class WorkerProxyImpl extends Thread {
 					spaceImpl.unRegister(this);
 					return;
 				}
-			}catch (InterruptedException e) {
+			}catch (InterruptedException e){
 				System.out.println("WorkerProxyImpl - Space queue error");
 				return;
-			}
 		}
-			
-		try {
-			closure = (Closure)backupQueue.takeLast();
-			try{
-				WorkerResult wr = worker.take();
-				if (wr.spawn_next != null){
-					int spawnNextID = spaceImpl.getID();
-					Closure spawnNextClosure = new Closure(wr.spawn_next, wr.spawn_nextJoin, closure.cont, spawnNextID);
-					if (spawnNextClosure.joinCounter > 0){
-						spaceImpl.putWaitMap(spawnNextClosure);
-					}else{
-						spaceImpl.putQ(spawnNextClosure);
-					}
-					int argNumber = 0;
-					while(!wr.spawn.isEmpty()){
-						Continuation cont = new Continuation(spawnNextID, argNumber);
-						Closure spawnClosure = new Closure((Task) wr.spawn.pop(), 0, cont, spaceImpl.getID());
-						spaceImpl.putQ(spawnClosure);
-						argNumber++;
-					}
-				}
-				if (wr.send_argument != null){
-					spaceImpl.placeArgument(closure.cont, wr.send_argument);
-				}
-				
-			}catch(RemoteException e){
-				spaceImpl.putQ(closure);
-				while (!backupQueue.isEmpty()){
-					spaceImpl.putQ((Closure)backupQueue.takeFirst());
-				}
-				spaceImpl.unRegister(this);
-				return;
-			}
-		}catch (InterruptedException e){
-			System.out.println("WorkerProxyImpl - Space queue error");
-			return;
 		}
 		
 	}
