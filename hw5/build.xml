@@ -71,6 +71,17 @@
   	  </classpath>
   	</java>
   </target>  
+  
+    <target name="multiworker" depends="dist" description="Start a worker for each core" >
+  	<java classname="system.MultiWorkerImpl" fork="true">
+  	  <jvmarg value="-Djava.rmi.server.codebase=${web_codebase}"/>
+  	  <jvmarg value="-Djava.security.policy=policy"/>
+  	  <arg value="${host}"/>
+  	  <classpath>
+  	    <pathelement location="dist/system.jar"/>
+  	  </classpath>
+  	</java>
+  </target>  
 
 	<target name = "8workers" depends="dist" description = "Start 8 Workers">
 		
