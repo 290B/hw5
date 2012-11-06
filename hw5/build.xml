@@ -107,10 +107,23 @@
 		</parallel>
 	</target>
 	
-  <target name="space" depends="dist" description="Start a space" >
+  <target name="spacepref" depends="dist" description="Start a space and enable prefetching" >
   	<java classname="system.SpaceImpl" fork="true">
   	  <jvmarg value="-Djava.rmi.server.codebase=${web_codebase}"/>
   	  <jvmarg value="-Djava.security.policy=policy"/>
+  	  <arg value="prefetching"/>
+  	  <classpath>
+  	    <pathelement location="dist/system.jar"/>
+  	  <pathelement location="dist/client.jar"/>
+  	  </classpath>
+  	</java>
+  </target>
+  
+    <target name="space" depends="dist" description="Start a space" >
+  	<java classname="system.SpaceImpl" fork="true">
+  	  <jvmarg value="-Djava.rmi.server.codebase=${web_codebase}"/>
+  	  <jvmarg value="-Djava.security.policy=policy"/>
+  	  <arg value="none"/>
   	  <classpath>
   	    <pathelement location="dist/system.jar"/>
   	  <pathelement location="dist/client.jar"/>

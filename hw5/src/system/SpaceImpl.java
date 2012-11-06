@@ -25,11 +25,16 @@ public class SpaceImpl implements Space, Worker2Space, proxy{
 	private static int nextID = 1;
 	private static final long serialVersionUID = 227L;
 	private static Shared shared;
+	private static boolean prefetching;
 	
 	public static void main(String[] args) {
 		if (System.getSecurityManager() == null ) 
 		{ 
 		   System.setSecurityManager(new java.rmi.RMISecurityManager() ); 
+		}
+		if (((String)args[0]).equals("prefetching")){
+			prefetching = true;
+			System.out.println("Prefetching enabled");
 		}
 		try {
 			Space space = new SpaceImpl();
@@ -133,7 +138,7 @@ public void put(Task task) throws RemoteException {
 }
 	
 	public void register(Worker worker) throws RemoteException, InterruptedException {
-		WorkerProxyImpl workerProxy = new WorkerProxyImpl(worker, this);
+		WorkerProxyImpl workerProxy = new WorkerProxyImpl(worker, this, prefetching);
 		workerProxy.start();
 		proxyList.add(workerProxy);
 		System.out.println("Computer registered");
