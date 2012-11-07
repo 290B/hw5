@@ -27,8 +27,8 @@ public class SpaceImpl implements Space, Worker2Space, proxy{
 	private static int nextID = 1;
 	private static final long serialVersionUID = 227L;
 	private static Shared shared;
-	private static boolean prefetching;
-	private static boolean spaceTask;
+	private static boolean prefetching = false;
+	private static boolean spaceTask = false;
 	
 	public static void main(String[] args) {
 		if (System.getSecurityManager() == null ) 
@@ -37,6 +37,7 @@ public class SpaceImpl implements Space, Worker2Space, proxy{
 		}
 		if (((String)args[0]).equals("prefetching")){
 			prefetching = true;
+			spaceTask = true;
 			System.out.println("Prefetching enabled");
 		}
 		try {

@@ -12,11 +12,11 @@
 	<property name="src" location="src"/>
 	<property name="build" location="build"/>
 	<property name="dist"  location="dist"/>
-	<property name="projectpath" location="/cs/student/torgel/temp/hw5experiment/hw5/hw5/ "/>
+	<property name="projectpath" location="/cs/student/orein/git/hw5/hw5 "/>
 	
 
 		
-	<property name="host" value="shaggy"/>
+	<property name="host" value="blondie"/>
 
 	<property name="computer1" value="elroy.cs.ucsb.edu" />
 	<property name="computer2" value="kenny.cs.ucsb.edu" />
@@ -31,7 +31,7 @@
 	<property name="computer9" value="popeye.cs.ucsb.edu" />
 	<property name="computer10" value="scooby.cs.ucsb.edu" />
 	<property name="computer11" value="whiley.cs.ucsb.edu" />
-	<property name="computer12" value="blondie.cs.ucsb.edu" />
+	<property name="computer12" value="thundarr.cs.ucsb.edu" />
 		
 	<property name="computer13" value="dudley.cs.ucsb.edu" />
 	<property name="computer14" value="eeyore.cs.ucsb.edu" />
