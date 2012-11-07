@@ -122,8 +122,8 @@ public class TspClient {
         try {
         	
 
-        	int tries = 10;
-        	int doesntCount = 2;
+        	int tries = 20;
+        	int doesntCount = 10;
         	
         	
         	String name = "Space";
@@ -138,7 +138,7 @@ public class TspClient {
         		tour = runJob (space,towns,whichLevelToSplitAt);
     			long stop = System.currentTimeMillis();
     			System.out.println("TSP, " + (i+1) +" try: " +(stop-start) +" milliseconds");
-    			if (tries >= doesntCount){
+    			if (i >= doesntCount){
     				total += (stop-start);		
     			}
     		}

@@ -26,12 +26,30 @@ public class FibClient {
 	    		int [][] count = null;
 	    		FibTask fibTask = new FibTask();
 	    		FibTask.Fib fib = fibTask.new Fib(20);
-	    		long start = System.currentTimeMillis();
-	    		space.put(fib);
-	    		int result = (Integer) space.take();
-	    		long stop = System.currentTimeMillis();
+
+	    		
+	    		int tries = 20;
+	        	int doesntCount = 10;
+	    		int total = 0;	    	
+	    		
+	    		int result = 0;
+	    		
+	    		for (int i = 0; i < tries; i++){
+	    			long start = System.currentTimeMillis();
+
+		    		space.put(fib);
+		    		result = (Integer) space.take();
+		    		
+	    			long stop = System.currentTimeMillis();
+	    			System.out.println("mandel, " + (i+1) +" try: " +(stop-start) +" milliseconds");
+	    			if (i >= doesntCount){
+	    				total += (stop-start);		
+	    			}
+	    		}
+	    		System.out.println("Average time: " + total/(tries-doesntCount));
+
 	    		System.out.println("The result is: " + result);
-	    		System.out.println("Job completion time is:   " + (stop-start) + " ms");
+	    		
 	    		try{
 	    			space.exit();
 	    			

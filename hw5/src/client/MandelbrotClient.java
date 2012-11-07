@@ -37,11 +37,29 @@ public class MandelbrotClient {
 	    		Space space = (Space) registry.lookup(name);
 	    		MandelbrotSetTask temp = new MandelbrotSetTask();
 	    		Task split = temp.new Split(CORNER_X, CORNER_Y, EDGE_LENGTH, N_PIXELS, ITERATION_LIMIT, DEPTH);
-	    		long start = System.currentTimeMillis();
-	    		space.put(split);
-	    		int [][] count = (int[][]) space.take();
-	    		long stop = System.currentTimeMillis();
-	    		System.out.println("Job completion time is:   " + (stop-start) + " ms");
+	    		
+	    		
+	    		int tries = 20;
+	        	int doesntCount = 10;
+	    		int total = 0;
+	    		int [][] count = null;
+	    		
+	    		for (int i = 0; i < tries; i++){
+	    			long start = System.currentTimeMillis();
+	    			space.put(split);
+		    		count = (int[][]) space.take();
+		    		
+	    			long stop = System.currentTimeMillis();
+	    			System.out.println("mandel, " + (i+1) +" try: " +(stop-start) +" milliseconds");
+	    			if (i >= doesntCount){
+	    				total += (stop-start);		
+	    			}
+	    		}
+	    		System.out.println("Average time: " + total/(tries-doesntCount));
+	    		
+	    		
+	    		
+	    		
 	    		
 	    		JLabel mandelbrotLabel = displayMandelbrotSetTaskReturnValue( count );
 				JFrame frame = new JFrame( "Result Visualizations" );
