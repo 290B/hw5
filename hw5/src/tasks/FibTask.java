@@ -53,8 +53,6 @@ public class FibTask implements Serializable{
 	 *
 	 */
 	public class Sum extends DAC implements Task, Serializable{
-		//public Object [] args;
-		//public Sum(Object... args){this.args = args;}
 		public Sum(){}
 		/**
 		 * @return returns null, but arguments are distributed to the DAC
@@ -64,7 +62,6 @@ public class FibTask implements Serializable{
 			int x = (Integer)(args[0]);
 			int y = (Integer)(args[1]);
 			send_argument( x + y );
-			//System.out.println("Sum is:  " + (x+y));
 			return null;
 		}
 		

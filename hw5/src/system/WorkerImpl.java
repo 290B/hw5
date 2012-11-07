@@ -38,19 +38,27 @@ public class WorkerImpl implements Worker, Serializable {
 			//Registry registry = LocateRegistry.createRegistry( 1093 );
 			//registry.rebind(name, stub);
 			
+			if (spaceHost.equals("spacemode")){
+				System.out.println("spaceWorker started");
+				SharedProxy sharedProxy = ((WorkerImpl)worker).new SharedProxy();
+				sharedProxy.start();
+				Registry registrySpace = LocateRegistry.getRegistry("localhost");
+				space = (Worker2Space)registrySpace.lookup(spaceName);
+				
+			}else{
+				//Worker worker = new WorkerImpl();
+				System.out.println("Connecting to space: " + spaceHost);
+				Registry registrySpace = LocateRegistry.getRegistry(spaceHost);
+				System.out.println("Looking up service: " + spaceName);
+				space = (Worker2Space)registrySpace.lookup(spaceName);
 			
-			//Worker worker = new WorkerImpl();
-			System.out.println("Connecting to space: " + spaceHost);
-			Registry registrySpace = LocateRegistry.getRegistry(spaceHost);
-			System.out.println("Looking up service: " + spaceName);
-			space = (Worker2Space)registrySpace.lookup(spaceName);
-			
-			space.register(worker);
-			System.out.println("WorkerImpl bound");
-			SharedProxy sharedProxy = ((WorkerImpl)worker).new SharedProxy();
-			sharedProxy.start();
-			Executer executer = ((WorkerImpl)worker).new Executer((WorkerImpl)worker);
-			executer.start();
+				space.register(worker);
+				System.out.println("WorkerImpl bound");
+				SharedProxy sharedProxy = ((WorkerImpl)worker).new SharedProxy();
+				sharedProxy.start();
+				Executer executer = ((WorkerImpl)worker).new Executer((WorkerImpl)worker);
+				executer.start();
+			}
 		} catch (Exception e) {
             System.err.println("WorkerImpl exception:");
             e.printStackTrace();
@@ -63,13 +71,14 @@ public class WorkerImpl implements Worker, Serializable {
 			t.setWorker(this);
 			try {
 				Shared sharedTemp = space.getShared(); 
-				shared = sharedTemp.clone();
+				if (sharedTemp != null){
+					this.shared = sharedTemp.clone();
+				}
 			} catch (RemoteException e) {
 				System.out.println("Space could not send Shared to worker");
 			} catch(CloneNotSupportedException e){
 				System.out.println("Could not clone...");
 			}
-			System.out.println("Executing task...");
 			task.execute();
 			return new WorkerResult(t.spawn, t.spawn_next, t.spawn_nextJoin , t.send_argument);
 	}

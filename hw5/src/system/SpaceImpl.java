@@ -10,6 +10,7 @@ import java.util.concurrent.*;
 import tasks.SharedTsp;
 import tasks.TspReturn;
 
+import api.DAC;
 import api.Shared;
 import api.Space;
 import api.Task;
@@ -22,10 +23,12 @@ public class SpaceImpl implements Space, Worker2Space, proxy{
 	private static final BlockingDeque readyQ = new LinkedBlockingDeque();
 	private static final BlockingQueue result = new LinkedBlockingQueue();
 	private static final BlockingQueue proxyList = new LinkedBlockingQueue();
+	private static final BlockingDeque spaceTaskQ = new LinkedBlockingDeque();
 	private static int nextID = 1;
 	private static final long serialVersionUID = 227L;
 	private static Shared shared;
 	private static boolean prefetching;
+	private static boolean spaceTask;
 	
 	public static void main(String[] args) {
 		if (System.getSecurityManager() == null ) 
@@ -42,6 +45,13 @@ public class SpaceImpl implements Space, Worker2Space, proxy{
 			Registry registry = LocateRegistry.createRegistry( 1099 );
 			registry.rebind(SERVICE_NAME, stub);
 			System.out.println("SpaceImpl bound");
+			WorkerImpl spaceWorker = new WorkerImpl();
+			String[] arg = new String[1];
+			arg[0]="spacemode";
+			spaceWorker.main(arg);
+			SpaceWorkerProxy spaceWorkerProxy = ((SpaceImpl)space).new SpaceWorkerProxy((SpaceImpl)space, spaceWorker);
+			spaceWorkerProxy.start();
+			
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -118,7 +128,11 @@ public void put(Task task) throws RemoteException {
 			temp[cont.argNumber] = argument;
 			closure.joinCounter--;
 			if (closure.joinCounter == 0){
-				putQ(closure);
+				if (spaceTask){
+					spaceTaskQ.addFirst(closure);
+				}else{
+					putQ(closure);
+				}
 			}else{
 			putWaitMap(closure);
 			}
@@ -178,6 +192,50 @@ public void put(Task task) throws RemoteException {
 		return null;
 	}
 	
-	
-
+	public class SpaceWorkerProxy extends Thread{
+		SpaceImpl sp;
+		Worker spaceWorker;
+		SpaceWorkerProxy(SpaceImpl sp, Worker spaceWorker){
+			this.sp = sp;
+			this.spaceWorker = spaceWorker;
+		}
+		public void run(){
+			while(true){
+				try {
+					Closure closure = (Closure) spaceTaskQ.take();
+					try {
+						WorkerResult wr = spaceWorker.execute(closure.t, closure.args);
+						if (wr.spawn_next != null){
+							int spawnNextID = sp.getID();
+							Closure spawnNextClosure = new Closure(wr.spawn_next, wr.spawn_nextJoin, closure.cont, spawnNextID);
+							if (spawnNextClosure.joinCounter > 0){
+								sp.putWaitMap(spawnNextClosure);
+							}else{
+								sp.putQ(spawnNextClosure);
+							}
+							int argNumber = 0;
+							while(!wr.spawn.isEmpty()){
+								Continuation cont = new Continuation(spawnNextID, argNumber);
+								Closure spawnClosure = new Closure((Task) wr.spawn.pop(), 0, cont, sp.getID());
+								sp.putQ(spawnClosure);
+								argNumber++;
+							}
+						}
+						if (wr.send_argument != null){
+							sp.placeArgument(closure.cont, wr.send_argument);
+						}
+			
+					} catch (RemoteException e) {
+						System.out.println("Major SpaceWorkerProxy error");
+						e.printStackTrace();
+						return;
+					}
+					
+						} catch (InterruptedException e) {
+					System.out.println("Error while taking closure from spaceTaskQ");
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }
